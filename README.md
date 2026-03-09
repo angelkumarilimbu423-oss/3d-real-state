@@ -127,3 +127,39 @@ A high-performance, responsive landing page template designed for modern real es
     </script>
 </body>
 </html>
+// Add this to your <script> section to generate a building procedurally
+function generateBuilding(floors, width, depth) {
+    const scene = new THREE.Scene();
+    const material = new THREE.MeshPhongMaterial({ 
+        color: 0x88ccff, 
+        transparent: true, 
+        opacity: 0.8,
+        shininess: 100 
+    });
+
+    const floorHeight = 3;
+    
+    for (let i = 0; i < floors; i++) {
+        // Create one floor
+        const geometry = new THREE.BoxGeometry(width, floorHeight, depth);
+        const floorMesh = new THREE.Mesh(geometry, material);
+        
+        // Stack floors on top of each other
+        floorMesh.position.y = i * floorHeight;
+        
+        // Add floor "skeleton" or wireframe for AI effect
+        const wireframe = new THREE.LineSegments(
+            new THREE.EdgesGeometry(geometry),
+            new THREE.LineBasicMaterial({ color: 0x0000ff })
+        );
+        wireframe.position.y = i * floorHeight;
+        
+        scene.add(floorMesh);
+        scene.add(wireframe);
+    }
+    return scene;
+}
+
+// Example: AI creates a 10-floor tower based on user input
+const aiBuilding = generateBuilding(10, 15, 15);
+
